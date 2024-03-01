@@ -17,3 +17,19 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# custom .gitignore
+.env.local
+.env.development
+.env.production
+.env.production.example
+.env.key
+public/sitemap.xml
+.htaccess
+composer.lock
+package-lock.json
+module.txt
+error_log
+public/build.zip
+public/css
+public/js
