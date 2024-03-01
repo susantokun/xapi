@@ -76,7 +76,9 @@ class FileController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = File::where('id', $id)->firstOrFail();
+
+        return response()->json($data);
     }
 
     /**
