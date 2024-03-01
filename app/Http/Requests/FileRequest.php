@@ -24,7 +24,7 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'files.*' => ['required', 'file', 'mimes:pdf,txt', 'ends_with:.pdf,.txt', 'max:10240'],
+            'files.*' => ['required', 'file', 'mimes:pdf,txt', 'max:10240'],
             'details.*' => ['nullable'],
             'files' => ['required', 'array', 'max:12'],
             'details' => ['nullable', 'array', 'max:3'],
