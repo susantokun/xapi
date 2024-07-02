@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FileRequest extends FormRequest
+class DocRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,7 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'document_title' => 'required|string|max:255',
-            'files.*' => ['required', 'file', 'mimes:pdf,txt,doc,docx', 'max:10240'],
-            'details.*' => ['nullable'],
-            'files' => ['required', 'array', 'max:12'],
-            'details' => ['nullable', 'array', 'max:3'],
+            'document_wxc_id' => 'required|string|max:255',
         ];
     }
 

@@ -1,5 +1,7 @@
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
+    
+
+   <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
@@ -14,8 +16,9 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
 </IfModule>
