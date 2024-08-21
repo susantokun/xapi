@@ -3,18 +3,143 @@
 namespace App\Http\Controllers\PaymentGateway;
 
 use App\Http\Controllers\Controller;
+use BniApi\BniPhp\api\OneGatePayment;
+use BniApi\BniPhp\Bni;
 use Illuminate\Http\Request;
 
 class BNIController extends Controller
 {
+	protected $bni;
+	protected $ogp;
+
+	function __construct()
+	{
+		$this->bni = new Bni(
+			$env = config('services.bni.env'),
+			$clientId = config('services.bni.client_id'),
+			$clientSecret = config('services.bni.client_secret'),
+			$apiKey = config('services.bni.api_key'),
+			$apiSecret = config('services.bni.api_secret'),
+			$appName = config('services.bni.base64_client_name')
+		);
+
+		$this->ogp = new OneGatePayment($this->bni);
+	}
+
+	public function send(Request $request)
+	{
+		try {
+			$client = new \GuzzleHttp\Client();
+			$url = 'https://wa.susantokun.com/api/send-message';
+			$res = $client->request('POST', $url, [
+				'headers' => [
+					'Accept' => 'application/json',
+				],
+				'form_params' => [
+					'api_key' => '07b6d24fb82e75c937763fa25795b263bd8651f8',
+					'receiver' => '6281906515912',
+					'data' => [
+						'message' => "Hello World"
+					],
+				],
+			]);
+
+			$response = json_decode($res->getBody()->getContents(), true);
+
+			return [
+				'status' => true,
+				'message' => $response
+			];
+		} catch (\Exception $e) {
+			return [
+				'status' => false,
+				'message' => $e->getMessage(),
+			];
+		}
+	}
+
 	public function test(Request $request)
 	{
-		$data = $request->all();
+		// $data = $request->all();
 
-		return response()->json([
-			'status' =>true,
-			'data' => $data
-		], 200);
+		// return response()->json([
+		// 	'status' => true,
+		// 	'data' => $data
+		// ], 200);
+
+		// $bni = new Bni(
+		// 	$env = 'sandbox',
+		// 	$clientId = config('services.bni.client_id'),
+		// 	$clientSecret = config('services.bni.client_secret'),
+		// 	$apiKey = config('services.bni.api_key'),
+		// 	$apiSecret = config('services.bni.api_secret'),
+		// 	$appName = config('services.bni.base64_client_name')
+		// );
+
+		// $ogp = new OneGatePayment($bni);
+
+		$getbalance = $this->ogp->getBalance(
+			$accountNo = '115471119'
+		);
+
+		return response()->json($getbalance);
+	}
+
+	public function token22()
+	{
+		$json = '{
+				"grant_type":"client_credentials",
+		}';
+		$ch = curl_init();
+		curl_setopt_array($ch, array(
+			CURLOPT_URL => "https://sandbox.bni.co.id/api/oauth/token",
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_SSL_VERIFYPEER => 0,
+			CURLOPT_POST => 1,
+			CURLOPT_POSTFIELDS => $json,
+			CURLOPT_HTTPHEADER => array(
+				"Authorization: Basic ZjYwZTNjNjMtNjkwNi00OTk2LTgxNmUtM2UzMjU1Y2I1NDI5OmY0OWY5ZjU3LTQ2NzktNDYxMS05ZTljLWU4NjFkNWE4NmMyYw==",
+				"Content-Type: application/x-www-form-urlencoded",
+			),
+		));
+		$output = curl_exec($ch);
+		curl_close($ch);
+		
+		return response()->json($output);
+	}
+
+	public function token2()
+	{
+		$client = new \GuzzleHttp\Client();
+		$url = 'https://sandbox.bni.co.id/api/oauth/token';
+		$res = $client->request('POST', $url, [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/x-www-form-urlencoded',
+				'Authorization' => 'Basic ZjYwZTNjNjMtNjkwNi00OTk2LTgxNmUtM2UzMjU1Y2I1NDI5OmY0OWY5ZjU3LTQ2NzktNDYxMS05ZTljLWU4NjFkNWE4NmMyYw==',
+			],
+			'form_params' => [
+				'grant_type' => 'client_credentials',
+			],
+		]);
+
+		$response = json_decode($res->getBody()->getContents(), true);
+
+		if (isset($response['access_token'])) {
+			return [
+				'status' => true,
+				'access_token' => $response['access_token']
+			];
+		} else {
+			return [
+				'status' => false,
+				'message' => 'Access token not found in the response'
+			];
+		}
 	}
 
 	public function token()
@@ -25,9 +150,11 @@ class BNIController extends Controller
 			$res = $client->request('POST', $url, [
 				'headers' => [
 					'Accept' => 'application/json',
-					'Content-Type' => 'application/x-www-form-urlencoded'
+					'Content-Type' => 'application/x-www-form-urlencoded',
+					'Authorization' => 'Basic ' . config('services.bni.base64_auth'),
+					// YjMyNzk5MWUtOTA5Ny00MDI4LTlmOGUtODFiN2MwOWE2MGFhOmU4YmQ2OTFjYzAwOTBhMmMyODRkZDQ5YzZkZmU4ZWEzNzFiY2VmNWExYjczNzJlZjY0MjlkZmRlYjU3ZjkzMzI=
 				],
-				'auth' => [config('services.bni.client_id'), config('services.bni.client_secret')],
+				// 'auth' => [config('services.bni.client_id'), config('services.bni.client_secret')],
 				'form_params' => [
 					'grant_type' => 'client_credentials',
 				],
@@ -128,7 +255,7 @@ class BNIController extends Controller
 			"signature" => $signature,
 		];
 		// $get_token = self::token();
-		
+
 		// if ($get_token['status']) {
 		if (!empty($request->token)) {
 			$access_token = $request->token;
@@ -406,8 +533,8 @@ class BNIController extends Controller
 
 		if ($get_token['status']) {
 			$access_token = $get_token['access_token'];
-		// if (!empty($request->token)) {
-		// 	$access_token = $request->token;
+			// if (!empty($request->token)) {
+			// 	$access_token = $request->token;
 
 			try {
 				$client = new \GuzzleHttp\Client();

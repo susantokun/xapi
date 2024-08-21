@@ -31,12 +31,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'bni' => [
+        'env' => env('BNI_ENV'),
         'endpoint_url' => env('BNI_ENDPOINT_URL'),
         'api_key' => env('BNI_API_KEY'),
         'api_secret' => env('BNI_API_SECRET'),
         'client_id' => env('BNI_CLIENT_ID'),
         'client_secret' => env('BNI_CLIENT_SECRET'),
         'base64_client_name' => env('BNI_BASE64_CLIENT_NAME'),
+        'base64_auth' => env('BNI_BASE64_AUTH'),
     ],
 
 ];

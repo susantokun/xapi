@@ -121,89 +121,92 @@ class CreatedocController extends Controller
         $delimiter = '-------------' . $boundary;
         $post_data = $this->build_data_files($boundary, $berkas_array);
 
-        $ch = curl_init();
-        curl_setopt_array($ch, array(
-            CURLOPT_URL => "http://localhost/xapi/api/create_draft",
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            //CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => $post_data,
-            CURLOPT_HTTPHEADER => array(
-                //"Authorization: Bearer $TOKEN",
-                "Content-Type: multipart/form-data; boundary=" . $delimiter,
-                "Content-Length: " . strlen($post_data)
-            ),
-        ));
-
-        $result_eoffice = curl_exec($ch);
-        curl_close($ch);
-        $berkas_eoffice = json_decode($result_eoffice, true);
-
-        if (!empty($data_files)) {
-            $utama_name = $data_files[0]['name'];
-            $utama_path = $data_files[0]['path'];
-            $utama_slotwxcid = $data_files[0]['eoffice']['data'][0]['slot_wxc_id'];
-            $utama_url = $data_files[0]['eoffice']['data'][0]['files'][0]['file_url'];
-            $utama_creation_date = $data_files[0]['eoffice']['data'][0]['files'][0]['creation_date'];
-            $lampiran_string = '';
-            foreach ($data_files as $key_final => $file_final) {
-
-                if ($key_final !== 0) {
-                    $lampiran_string = $lampiran_string . $file_final['eoffice']['data'][0]['files'][0]['file_url'] . "^" .
-                        $file_final['eoffice']['data'][0]['files'][0]['file_name'] . "^" .
-                        $file_final['eoffice']['data'][0]['slot_wxc_id'] . "^" .
-                        $file_final['path'] . "^" .
-                        "|";
-                }
-            }
-        } else {
-            $utama_name = "";
-            $utama_path = "";
-            $utama_slotwxcid = "";
-            $utama_url = "";
-            $lampiran_string = "";
-            $document_originator = "";
-            $pic_email_address = "";
-        }
-        if (!empty($berkas_eoffice['data'])) {
-            $berkas_wxc = $berkas_eoffice['data'][0]['wxc_id'];
-        } else {
-            $berkas_wxc = 'empty';
-        }
-
-        if (!empty($data['files'])) {
-            $file_name = $data['files'][0]['name'];
-            $file_path = $data['files'][0]['path'];
-        } else {
-            $file_name = 'empty';
-            $file_path = 'empty';
-        }
-        if (!empty($data['id'])) {
-            $file_id = $data['id'];
-        } else {
-            $file_id = 'empty';
-        }
-        if (!empty($data['details'])) {
-            $file_detail = $data['details']['detail_1'];
-        } else {
-            $file_detail = 'empty';
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Data berhasil ditambahkan!',
-            'utama_slotwxcid' => $utama_slotwxcid,
-            'utama_url' => $utama_url,
-            'utama_creation_date' => $utama_creation_date,
-            'utama_name' => $utama_name,
-            'utama_path' => $utama_path,
-            'file_detail' => $file_detail,
-            'berkas_wxc' => $berkas_wxc,
-            'lampiran_string' => $lampiran_string,
+        dd([
+            '$post_data' => $post_data,
+            '$delimiter' => $delimiter,
         ]);
+
+        // $ch = curl_init();
+        // curl_setopt_array($ch, array(
+        //     CURLOPT_URL => "http://localhost/xapi/api/create_draft",
+        //     CURLOPT_RETURNTRANSFER => 1,
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 30,
+        //     //CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => "POST",
+        //     CURLOPT_POST => 1,
+        //     CURLOPT_POSTFIELDS => $post_data,
+        //     CURLOPT_HTTPHEADER => array(
+        //         //"Authorization: Bearer $TOKEN",
+        //         "Content-Type: multipart/form-data; boundary=" . $delimiter,
+        //         "Content-Length: " . strlen($post_data)
+        //     ),
+        // ));
+
+        // $result_eoffice = curl_exec($ch);
+        // curl_close($ch);
+        // $berkas_eoffice = json_decode($result_eoffice, true);
+
+        // if (!empty($data_files)) {
+        //     $utama_name = $data_files[0]['name'];
+        //     $utama_path = $data_files[0]['path'];
+        //     $utama_slotwxcid = $data_files[0]['eoffice']['data'][0]['slot_wxc_id'];
+        //     $utama_url = $data_files[0]['eoffice']['data'][0]['files'][0]['file_url'];
+        //     $utama_creation_date = $data_files[0]['eoffice']['data'][0]['files'][0]['creation_date'];
+        //     $lampiran_string = '';
+        //     foreach ($data_files as $key_final => $file_final) {
+
+        //         if ($key_final !== 0) {
+        //             $lampiran_string = $lampiran_string . $file_final['eoffice']['data'][0]['files'][0]['file_url'] . "^" .
+        //                 $file_final['eoffice']['data'][0]['files'][0]['file_name'] . "^" .
+        //                 $file_final['eoffice']['data'][0]['slot_wxc_id'] . "^" .
+        //                 $file_final['path'] . "^" .
+        //                 "|";
+        //         }
+        //     }
+        // } else {
+        //     $utama_name = "";
+        //     $utama_path = "";
+        //     $utama_slotwxcid = "";
+        //     $utama_url = "";
+        //     $lampiran_string = "";
+        // }
+        // if (!empty($berkas_eoffice['data'])) {
+        //     $berkas_wxc = $berkas_eoffice['data'][0]['wxc_id'];
+        // } else {
+        //     $berkas_wxc = 'empty';
+        // }
+
+        // if (!empty($data['files'])) {
+        //     $file_name = $data['files'][0]['name'];
+        //     $file_path = $data['files'][0]['path'];
+        // } else {
+        //     $file_name = 'empty';
+        //     $file_path = 'empty';
+        // }
+        // if (!empty($data['id'])) {
+        //     $file_id = $data['id'];
+        // } else {
+        //     $file_id = 'empty';
+        // }
+        // if (!empty($data['details'])) {
+        //     $file_detail = $data['details']['detail_1'];
+        // } else {
+        //     $file_detail = 'empty';
+        // }
+
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'Data berhasil ditambahkan!',
+        //     'utama_slotwxcid' => $utama_slotwxcid,
+        //     'utama_url' => $utama_url,
+        //     'utama_creation_date' => $utama_creation_date,
+        //     'utama_name' => $utama_name,
+        //     'utama_path' => $utama_path,
+        //     'file_detail' => $file_detail,
+        //     'berkas_wxc' => $berkas_wxc,
+        //     'lampiran_string' => $lampiran_string,
+        // ]);
     }
 
     function build_data_files($boundary, $fields)

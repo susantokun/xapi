@@ -4,8 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "682c3b383ed5a5e43e626461d96b7405",
+    "content-hash": "fc50b66679ca992476a22142299aa62a",
     "packages": [
+        {
+            "name": "bni-api/bni-php-client",
+            "version": "2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bni-api/bni-php.git",
+                "reference": "c79a9f393d7a5abb79b9422b1d75772f7d2f7997"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bni-api/bni-php/zipball/c79a9f393d7a5abb79b9422b1d75772f7d2f7997",
+                "reference": "c79a9f393d7a5abb79b9422b1d75772f7d2f7997",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "7.*"
+            },
+            "require-dev": {
+                "codeception/codeception": "4.2.x-dev",
+                "codeception/module-asserts": "^1.0.0",
+                "codeception/module-phpbrowser": "^1.0.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BniApi\\BniPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "BNI-APM",
+                    "email": "bni.dgl.apm@gmail.com"
+                }
+            ],
+            "description": "Official BNI API SDK for PHP",
+            "support": {
+                "issues": "https://github.com/bni-api/bni-php/issues",
+                "source": "https://github.com/bni-api/bni-php/tree/2.3.1"
+            },
+            "time": "2024-04-24T06:23:28+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.11.0",

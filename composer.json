@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "bni-api/bni-php-client": "^2.3",
         "guzzlehttp/guzzle": "*",
         "laravel/breeze": "^1.29",
         "laravel/framework": "^10.10",

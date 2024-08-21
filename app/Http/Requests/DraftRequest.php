@@ -25,9 +25,11 @@ class DraftRequest extends FormRequest
     {
         return [
             'document_title' => 'required|string|max:255',
-            'role_wxc_id' => 'required|string|max:255',
+            // 'role_wxc_id' => 'required|string|max:255',
             'berkas_utama' => 'required|string',
             'list_lampiran' => 'required|string',
+            'document_originator' => 'required|string',
+            'pic_email_address' => 'required|string|email',
         ];
     }
 
