@@ -24,8 +24,7 @@ Route::apiResource('eoffice_history', EofficeHistoryController::class);
 
 Route::prefix('payments')->name('payments.')->group(function (){
     Route::controller(\App\Http\Controllers\PaymentGateway\BNIController::class)->prefix('bni')->name('bni.')->group(function () {
-        Route::post('test', 'test')->name('test');
-        Route::post('token2', 'token2')->name('token2');
+        Route::get('test', 'test')->name('test');
         Route::post('wiwjqiekelajska', 'token')->name('token');
         Route::post('getbalance', 'getbalance')->name('getbalance');
         Route::post('getinhouseinquiry', 'getinhouseinquiry')->name('getinhouseinquiry');

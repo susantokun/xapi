@@ -25,7 +25,7 @@ class FileRequest extends FormRequest
     {
         return [
             'document_title' => 'required|string|max:255',
-            'files.*' => ['required', 'file', 'mimes:pdf,txt,doc,docx', 'max:10240'],
+            'files.*' => ['required', 'file', 'mimes:pdf,txt,doc,docx', 'max:102400'],
             'details.*' => ['nullable'],
             'files' => ['required', 'array', 'max:12'],
             'details' => ['nullable', 'array', 'max:3'],
